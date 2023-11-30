@@ -1,0 +1,6 @@
+@AspNetCore.CDN_HostAddress = http://localhost:5116
+
+GET {{AspNetCore.CDN_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
