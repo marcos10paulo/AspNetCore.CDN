@@ -4,9 +4,9 @@ namespace AspNetCore.CDN.Enums
 {
     public enum Extensions
     {
-        [Description("jpg")]
+        [Description(".jpg")]
         jpg = 0,
-        [Description("tiff")]
+        [Description(".tiff")]
         tiff = 1,
         pdf = 2
     }

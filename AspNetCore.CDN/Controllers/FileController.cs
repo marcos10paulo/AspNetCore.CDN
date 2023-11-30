@@ -24,7 +24,7 @@ namespace AspNetCore.CDN.Controllers
         {
             _fileServices = fileServices;
             _memoryCache = memoryCache;
-            _basePath = "//programacao120//";
+            _basePath = "//programacao120/ind_pessoal_foto/";
             _returnType = "file";
         }
 
@@ -49,7 +49,7 @@ namespace AspNetCore.CDN.Controllers
                 count++;
                 var upload = new FileUploadRequest
                 {
-                    FileName = moreOneFile ? $"{filename}-{count}.{extension}" : $"{filename}.{extension}",
+                    FileName = moreOneFile ? $"{filename}-{count}{extension}" : $"{filename}{extension}",
                     File = file
                 };
 
@@ -69,7 +69,7 @@ namespace AspNetCore.CDN.Controllers
         public async Task<IActionResult> GetSrc(string filename)
         {
             string fullname = Path.Combine(_basePath, filename);
-
+            
             if (!_memoryCache.TryGetValue(_returnType + fullname, out string result))
             {
                 if (_returnType == "file")
@@ -77,13 +77,12 @@ namespace AspNetCore.CDN.Controllers
                 else
                     result = Convert.ToBase64String(System.IO.File.ReadAllBytes(fullname));
 
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                   .SetSlidingExpiration(TimeSpan.FromMinutes(15));
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(15));
 
                 _memoryCache.Set(_returnType + fullname, result, cacheEntryOptions);
             }
 
-            if (result == null)
+            if (string.IsNullOrEmpty(result))
                 return BadRequest();
 
             return Ok(result);
